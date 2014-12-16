@@ -351,7 +351,7 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
-    }
+    },
     
     // Syncs dist folder with S3 bucket : see https://github.com/MathieuLoutre/grunt-aws-s3
     aws: grunt.file.readJSON('grunt-aws.json'),
