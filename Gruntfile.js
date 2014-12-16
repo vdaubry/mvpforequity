@@ -352,6 +352,34 @@ module.exports = function (grunt) {
         singleRun: true
       }
     }
+    
+    // Syncs dist folder with S3 bucket : see https://github.com/MathieuLoutre/grunt-aws-s3
+    aws: grunt.file.readJSON('grunt-aws.json'),
+    aws_s3: {
+      options: {
+        accessKeyId: '<%= aws.AWSAccessKeyId %>', // Use the variables
+        secretAccessKey: '<%= aws.AWSSecretKey %>', // You can also use env variables
+        region: 'eu-west-1',
+        uploadConcurrency: 5
+      },
+      clean_production: {
+        options: {
+          bucket: 'mvpforequity.com',
+          debug: false //files are actually deleted and not just logged
+        },
+        files: [
+          {dest: '/', action: 'delete'}
+        ]
+      },
+      production: {
+        options: {
+          bucket: 'mvpforequity.com'
+        },
+        files: [
+          {expand: true, cwd: 'dist/', src: ['**'], dest: '.'}
+        ]
+      }
+    }
   });
 
 
@@ -404,5 +432,10 @@ module.exports = function (grunt) {
     'newer:jshint',
     'test',
     'build'
+  ]);
+  
+  grunt.registerTask('deploy', [
+    'build',
+    'aws_s3'
   ]);
 };

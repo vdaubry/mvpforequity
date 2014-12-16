@@ -1,8 +1,8 @@
 .tmp
 .sass-cache
+*.log
+build/
+grunt-aws.json
 node_modules/
 bower_components/
-*.log
-
-build/
 dist/
